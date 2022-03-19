@@ -1,4 +1,4 @@
 import { QuestionPage } from './model';
-import askQuestion from './question';
+import askQuestion from './pages/ask';
 
 askQuestion(QuestionPage.HOME_MENU);
