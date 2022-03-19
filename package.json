@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "npm run prettier && npm run lint && tsc",
-    "start": "node .",
+    "start": "ts-node src/index.ts",
     "test": "jest",
     "report": "jest unit --collect-coverage && open coverage/lcov-report/index.html",
     "lint": "eslint . --ext .ts,.tsx",
