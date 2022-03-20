@@ -1,7 +1,8 @@
 import { Menu } from "./Menu";
 import { Post } from "./Post";
-import { SelectProgram } from "./SelectProgram";
+import { SelectProgram } from "./Programs/SelectProgram";
 import { CommandError } from "./CommandError";
+import { ViewProgram } from "./Programs/ViewProgram";
 
 enum MenuID {
   LOOKUP = 1,
@@ -10,7 +11,7 @@ enum MenuID {
 
 export class Blog {
   private readonly menus: Menu[];
-  constructor(private posts: Post[]) {
+  constructor(private readonly posts: Post[]) {
     this.posts = posts;
     this.menus = [
       new Menu(MenuID.LOOKUP, "목록 조회"),
@@ -18,20 +19,40 @@ export class Blog {
     ];
   }
 
-  lookupPosts() {
-    console.log("lookup");
+  async selectPost() {
+    const selectProgram = new SelectProgram(this.posts);
+    try {
+      const selectedPost = (await selectProgram.run()) as Post;
+      this.viewPost(selectedPost);
+    } catch (e) {
+      if (e instanceof CommandError) {
+        console.log(e.message);
+        this.selectPost();
+      }
+    }
+  }
+
+  private viewPost(post: Post) {
+    new ViewProgram([
+      { key: "제목", value: post.title },
+      { key: "내용", value: post.content },
+    ]).run();
   }
 
   createPost() {
     console.log("write");
   }
 
+  private handleMenuSelect(id: MenuID) {
+    if (id === MenuID.LOOKUP) this.selectPost();
+    if (id === MenuID.WRITE) this.createPost();
+  }
+
   private async selectMenu() {
-    const program = new SelectProgram(this.menus);
+    const selectProgram = new SelectProgram(this.menus);
     try {
-      const answer = parseInt(await program.run());
-      if (answer === MenuID.LOOKUP) this.lookupPosts();
-      if (answer === MenuID.WRITE) this.createPost();
+      const selectedMenu = await selectProgram.run();
+      this.handleMenuSelect(selectedMenu.id);
     } catch (e) {
       if (e instanceof CommandError) {
         console.log(e.message);
