@@ -3,6 +3,7 @@ import { Post } from "./Post";
 import { SelectProgram } from "./Programs/SelectProgram";
 import { CommandError } from "./CommandError";
 import { ViewProgram } from "./Programs/ViewProgram";
+import { PostingProgram } from "./Programs/PostingProgram";
 
 enum MenuID {
   LOOKUP = 1,
@@ -11,7 +12,7 @@ enum MenuID {
 
 export class Blog {
   private readonly menus: Menu[];
-  constructor(private readonly posts: Post[]) {
+  constructor(private posts: Post[]) {
     this.posts = posts;
     this.menus = [
       new Menu(MenuID.LOOKUP, "목록 조회"),
@@ -39,8 +40,10 @@ export class Blog {
     ]).run();
   }
 
-  createPost() {
-    console.log("write");
+  private createPost() {
+    new PostingProgram(this.posts).run().then((posts) => {
+      this.posts = posts;
+    });
   }
 
   private handleMenuSelect(id: MenuID) {
