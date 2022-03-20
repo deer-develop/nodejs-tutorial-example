@@ -1,6 +1,7 @@
-export class CommandError {
-  message: string;
+export class CommandError extends Error {
+  name: string;
   constructor(message: string) {
-    this.message = message;
+    super(`\n${message}\n`);
+    this.name = "CommandError";
   }
 }
