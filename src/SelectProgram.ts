@@ -1,14 +1,13 @@
 import { Program } from "./Program";
-import { CommandError } from "./CommandError";
 import { Item } from "./types/Item";
+import { CommandError } from "./CommandError";
 
 export class SelectProgram extends Program {
-  constructor(private items: Item[], commandError: CommandError) {
-    super(commandError);
+  constructor(private items: Item[]) {
+    super();
     this.items = items;
   }
 
-  // item 출력
   private printItems() {
     this.items.forEach((item) => {
       this.commander.print(`${item.id}) ${item.title}\n`);
@@ -25,15 +24,14 @@ export class SelectProgram extends Program {
     return [...this.items.map((item) => String(item.id))].includes(answer);
   }
 
-  async run() {
+  async run(): Promise<string> {
     this.printItems();
     const answer = await this.ask();
     if (!this.validate(answer)) {
-      this.throwCommandError();
-    } else {
-      const item = this.items.find((item) => String(item.id) === answer);
-      if (!item) return;
-      item.select();
+      throw new CommandError(
+        "입력이 올바르지 않습니다. 아래 선택지의 맨 앞 문자를 입력해주세요."
+      );
     }
+    return answer;
   }
 }
