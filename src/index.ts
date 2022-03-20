@@ -1,18 +1,30 @@
 import * as readline from "readline";
-import { Program } from "./Program";
-import { Menu } from "./Menu";
-import { SelectProgram } from "./SelectProgram";
-import { CommandError } from "./CommandError";
+import { Blog } from "./Blog";
+import { Post } from "./Post";
 
 export const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const program = new SelectProgram(
-  [new Menu(1, "목록 조회"), new Menu(2, "쓰기")],
-  new CommandError(
-    "입력이 올바르지 않습니다. 아래 선택지의 맨 앞 문자를 입력해주세요."
-  )
-);
-program.run();
+const posts = [
+  new Post(
+    1,
+    "물고기는 존재하지 않는다",
+    "물고기는 존재하지 않는다, 물고기는 존재하지 않는다"
+  ),
+  new Post(
+    2,
+    "호킹의 빅 퀘스천에 대한 간결한 대답",
+    "호킹의 빅 퀘스천에 대한 간결한 대답, 호킹의 빅 퀘스천에 대한 간결한 대답"
+  ),
+  new Post(3, "나와 너", "나와 너, 나와 너"),
+  new Post(
+    4,
+    "상자 밖에 있는 사람",
+    "상자 밖에 있는 사람, 상자 밖에 있는 사람"
+  ),
+];
+
+const blog = new Blog(posts);
+blog.open();
