@@ -7,7 +7,4 @@ export class Menu implements Item {
     this.id = id;
     this.title = title;
   }
-  select() {
-    console.log("This is Menu");
-  }
 }
