@@ -1,5 +1,5 @@
-import { Commander } from "./Commander";
-import { rl } from "./index";
+import { Commander } from "../Commander";
+import { rl } from "../index";
 
 export class Program {
   commander: Commander;

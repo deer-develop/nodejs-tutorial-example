@@ -1,6 +1,6 @@
 import { Program } from "./Program";
-import { Item } from "./types/Item";
-import { CommandError } from "./CommandError";
+import { Item } from "../types/Item";
+import { CommandError } from "../CommandError";
 
 export class SelectProgram extends Program {
   constructor(private items: Item[]) {
@@ -24,7 +24,7 @@ export class SelectProgram extends Program {
     return [...this.items.map((item) => String(item.id))].includes(answer);
   }
 
-  async run(): Promise<string> {
+  async run(): Promise<Item> {
     this.printItems();
     const answer = await this.ask();
     if (!this.validate(answer)) {
@@ -32,6 +32,6 @@ export class SelectProgram extends Program {
         "입력이 올바르지 않습니다. 아래 선택지의 맨 앞 문자를 입력해주세요."
       );
     }
-    return answer;
+    return this.items.find((item) => item.id === parseInt(answer))!;
   }
 }
