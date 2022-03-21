@@ -11,7 +11,10 @@ export class Commander {
 
   async ask(text: string): Promise<string> {
     return new Promise((resolve) => {
-      this.rl.question(text, resolve);
+      this.rl.question(text, (answer) => {
+        console.clear();
+        resolve(answer);
+      });
     });
   }
 }
