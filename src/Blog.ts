@@ -5,6 +5,8 @@ import { CommandError } from "./CommandError";
 import { ViewProgram } from "./Programs/ViewProgram";
 import { PostingProgram } from "./Programs/PostingProgram";
 import { Exit } from "./Exit";
+import { Commander } from "./Commander";
+import { rl } from "./index";
 
 enum MenuID {
   LOOKUP = 1,
@@ -13,6 +15,7 @@ enum MenuID {
 
 export class Blog {
   private readonly menus: Menu[];
+  private readonly commander: Commander;
 
   constructor(private readonly posts: Post[]) {
     this.posts = posts;
@@ -20,6 +23,7 @@ export class Blog {
       new Menu(MenuID.LOOKUP, "목록 조회"),
       new Menu(MenuID.WRITE, "쓰기"),
     ];
+    this.commander = new Commander(rl);
   }
 
   open() {
@@ -35,13 +39,13 @@ export class Blog {
         executor: () => {
           console.log("종료되었습니다.");
         },
-      })
+      }),
+      this.commander
     );
 
     try {
       const selectedMenu = await selectProgram.run();
       if (!selectedMenu) return;
-
       if (selectedMenu.id === MenuID.LOOKUP) this.selectPost();
       if (selectedMenu.id === MenuID.WRITE) this.createPost();
     } catch (e) {
@@ -61,7 +65,8 @@ export class Blog {
         executor: () => {
           this.selectMenu();
         },
-      })
+      }),
+      this.commander
     );
     try {
       const selectedPost = await selectProgram.run();
@@ -84,16 +89,21 @@ export class Blog {
       ],
       () => {
         this.selectPost();
-      }
+      },
+      this.commander
     ).run();
   }
   private addPost(post: Post) {
     this.posts.push(post);
   }
   private createPost() {
-    new PostingProgram(this.posts.length, () => {
-      this.selectMenu();
-    })
+    new PostingProgram(
+      this.posts.length,
+      () => {
+        this.selectMenu();
+      },
+      this.commander
+    )
       .run()
       .then((post) => {
         this.addPost(post);

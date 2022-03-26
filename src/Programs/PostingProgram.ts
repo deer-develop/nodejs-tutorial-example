@@ -1,14 +1,15 @@
-import { Program } from "./Program";
 import { Post } from "../Post";
+import { Commander } from "../Commander";
 
-export class PostingProgram extends Program {
+export class PostingProgram {
   constructor(
     private readonly postSize: number,
-    private readonly goBack: () => void
+    private readonly goBack: () => void,
+    private readonly commander: Commander
   ) {
-    super();
     this.postSize = postSize;
     this.goBack = goBack;
+    this.commander = commander;
   }
 
   async run(): Promise<Post> {

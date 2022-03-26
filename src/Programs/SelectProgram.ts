@@ -1,13 +1,18 @@
-import { Program } from "./Program";
 import { Item } from "../types/Item";
 import { CommandError } from "../CommandError";
 import { Exit } from "../Exit";
+import { Commander } from "../Commander";
+import { Program } from "./Program";
 
-export class SelectProgram extends Program {
-  constructor(private items: Item[], private exit: Exit) {
-    super();
+export class SelectProgram implements Program<Item> {
+  constructor(
+    private items: Item[],
+    private exit: Exit,
+    private commander: Commander
+  ) {
     this.items = items;
     this.exit = exit;
+    this.commander = commander;
   }
 
   private printItems() {

@@ -1,12 +1,16 @@
-import { Program } from "./Program";
 import { Dictonary } from "../types/Item";
-import { Exit } from "../Exit";
+import { Commander } from "../Commander";
+import { Program } from "./Program";
 
-export class ViewProgram extends Program {
-  constructor(private items: Dictonary[], private readonly goBack: () => void) {
-    super();
+export class ViewProgram implements Program<void> {
+  constructor(
+    private items: Dictonary[],
+    private readonly goBack: () => void,
+    private commander: Commander
+  ) {
     this.items = items;
     this.goBack = goBack;
+    this.commander = commander;
   }
 
   run() {
