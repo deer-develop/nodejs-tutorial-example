@@ -1,27 +1,27 @@
-import answerCallback from './answer';
-import { QuestionPage } from "../model";
-import r1 from '../readline';
-import store from '../store';
+import replyToAnswer from "./answer";
+import store from "../store";
+import commander from "../commander";
 
-const askQuestion = (page: QuestionPage) => {
-  showQuestionPage(page);
-  r1.question('선택: ', (answer: string) =>
-    answerCallback(answer, page)
-  );
+const askQuestion = async () => {
+  showQuestionPage();
+
+  const answer = await commander.ask("선택: ");
+  replyToAnswer(answer);
 };
 
-const showQuestionPage = (page: QuestionPage) => {
-  showOptionList(page === QuestionPage.HOME_MENU ? store.HOME_MENU : store.postTitles);
-  showLastOption(page);
+const showQuestionPage = () => {
+  showOptionList();
+  showLastOption();
 };
 
-const showOptionList = (list: string[]) => {
+const showOptionList = () => {
+  const list =
+    store.askType === "HomeMenu" ? store.HOME_MENU : store.postTitles;
   if (!list.length) return;
   list.forEach((item, i) => console.log(`${i + 1}) ${item}`));
 };
 
-const showLastOption = (page: QuestionPage) =>
-  console.log(`x) ${page === QuestionPage.HOME_MENU ? "종료" : "뒤로가기"}\n`);
-
+const showLastOption = () =>
+  console.log(`x) ${store.askType === "HomeMenu" ? "종료" : "뒤로가기"}\n`);
 
 export default askQuestion;
