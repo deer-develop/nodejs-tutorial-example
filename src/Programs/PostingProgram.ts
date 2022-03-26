@@ -3,23 +3,18 @@ import { Post } from "../Post";
 
 export class PostingProgram extends Program {
   constructor(
-    private readonly posts: Post[],
+    private readonly postSize: number,
     private readonly goBack: () => void
   ) {
     super();
-    this.posts = posts;
+    this.postSize = postSize;
     this.goBack = goBack;
   }
 
-  private getSizeOfPosts() {
-    return this.posts.length;
-  }
-
-  async run(): Promise<Post[]> {
+  async run(): Promise<Post> {
     const title = await this.commander.ask("제목: ");
     const content = await this.commander.ask("내용: ");
-    const id = this.getSizeOfPosts() + 1;
-
+    const id = this.postSize + 1;
     const newPost = new Post(id, title, content);
 
     this.commander.print(`제목: ${newPost.title}\n`);
@@ -32,6 +27,6 @@ export class PostingProgram extends Program {
       .then((_) => {
         this.goBack();
       });
-    return [...this.posts, newPost];
+    return newPost;
   }
 }
