@@ -19,7 +19,6 @@ const write = async () => {
       title = answer;
       console.log(`제목: ${title}`);
       store.writeType = "Content";
-      write();
     } else {
       content = answer;
       compelteWriting();

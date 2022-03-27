@@ -1,13 +1,14 @@
 import { Post, AskType, ViewType, WriteType } from "./model";
 import { makeAutoObservable, reaction } from "mobx";
 import askQuestion from "./pages/ask";
+import write from "./pages/write";
 
 class Store {
   private readonly _HOME_MENU: string[] = ["목록 조회", "쓰기"];
   private _postList: Post[] = [];
   private _askType: AskType = "HomeMenu";
   private _viewType: ViewType = "View";
-  private _writeType: WriteType = "Title";
+  private _writeType: WriteType = "Content";
 
   constructor() {
     makeAutoObservable(this);
@@ -15,6 +16,13 @@ class Store {
     reaction(
       () => this._askType,
       () => askQuestion()
+    );
+
+    reaction(
+      () => this._writeType,
+      () => {
+        write();
+      }
     );
   }
 

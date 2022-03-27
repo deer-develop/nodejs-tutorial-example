@@ -1,7 +1,6 @@
 import { store } from "./../store";
 import askQuestion from "./ask";
 import showPost from "./show";
-import write from "./write";
 import commander from "../commander";
 
 const ERROR_MESSAGE =
@@ -28,20 +27,13 @@ const isAnswerValid = (answer: string): boolean => {
 };
 
 const getHomeMenuAnswer = (answer: string) => {
-  if (answer === "1") {
-    store.askType = "BulletinBoard";
-  } else if (answer === "2") {
-    store.writeType = "Title";
-    write();
-  } else {
-    commander.terminate();
-  }
+  if (answer === "1") store.askType = "BulletinBoard";
+  else if (answer === "2") store.writeType = "Title";
+  else commander.terminate();
 };
 
 const getBulletinBoardAnswer = (answer: string) => {
-  if (answer === "x") {
-    return (store.askType = "HomeMenu");
-  }
+  if (answer === "x") return (store.askType = "HomeMenu");
 
   store.viewType = "View";
   showPost(store.getPost(parseInt(answer) - 1));
