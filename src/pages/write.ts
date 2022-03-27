@@ -1,4 +1,4 @@
-import store from "../store";
+import { store } from "./../store";
 import showPost from "./show";
 import commander from "../commander";
 

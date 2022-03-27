@@ -1,18 +1,21 @@
 import { Post, AskType, ViewType, WriteType } from "./model";
+import { makeAutoObservable, reaction } from "mobx";
+import askQuestion from "./pages/ask";
 
 class Store {
-  private readonly _HOME_MENU: string[];
-  private _postList: Post[];
-  private _askType: AskType;
-  private _viewType: ViewType;
-  private _writeType: WriteType;
+  private readonly _HOME_MENU: string[] = ["목록 조회", "쓰기"];
+  private _postList: Post[] = [];
+  private _askType: AskType = "HomeMenu";
+  private _viewType: ViewType = "View";
+  private _writeType: WriteType = "Title";
 
   constructor() {
-    this._HOME_MENU = ["목록 조회", "쓰기"];
-    this._postList = [];
-    this._askType = "HomeMenu";
-    this._viewType = "View";
-    this._writeType = "Title";
+    makeAutoObservable(this);
+
+    reaction(
+      () => this._askType,
+      () => askQuestion()
+    );
   }
 
   get HOME_MENU() {
@@ -70,6 +73,4 @@ class Store {
   }
 }
 
-const store = new Store();
-
-export default store;
+export const store = new Store();

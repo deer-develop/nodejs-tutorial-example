@@ -1,6 +1,6 @@
+import { store } from "./../store";
 import askQuestion from "./ask";
 import showPost from "./show";
-import store from "../store";
 import write from "./write";
 import commander from "../commander";
 
@@ -30,7 +30,6 @@ const isAnswerValid = (answer: string): boolean => {
 const getHomeMenuAnswer = (answer: string) => {
   if (answer === "1") {
     store.askType = "BulletinBoard";
-    askQuestion();
   } else if (answer === "2") {
     store.writeType = "Title";
     write();
@@ -41,8 +40,7 @@ const getHomeMenuAnswer = (answer: string) => {
 
 const getBulletinBoardAnswer = (answer: string) => {
   if (answer === "x") {
-    store.askType = "HomeMenu";
-    return askQuestion();
+    return (store.askType = "HomeMenu");
   }
 
   store.viewType = "View";

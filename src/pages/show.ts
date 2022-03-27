@@ -1,5 +1,5 @@
 import { Post } from "../model";
-import store from "../store";
+import { store } from "./../store";
 
 const ON_ENTER_MESSAGE = "엔터 키를 누르면 이전 화면으로 되돌아갑니다.";
 

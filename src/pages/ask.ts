@@ -1,5 +1,5 @@
+import { store } from "./../store";
 import replyToAnswer from "./answer";
-import store from "../store";
 import commander from "../commander";
 
 const askQuestion = async () => {
