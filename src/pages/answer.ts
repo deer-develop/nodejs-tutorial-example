@@ -1,6 +1,5 @@
 import { store } from "./../store";
 import askQuestion from "./ask";
-import showPost from "./show";
 import commander from "../commander";
 
 const ERROR_MESSAGE =
@@ -35,9 +34,7 @@ const getHomeMenuAnswer = (answer: string) => {
 const getBulletinBoardAnswer = (answer: string) => {
   if (answer === "x") return (store.askType = "HomeMenu");
 
-  store.viewType = "View";
-  showPost(store.getPost(parseInt(answer) - 1));
-  commander.onEnter();
+  store.configureShowInfo(store.getPost(parseInt(answer) - 1), "View");
 };
 
 export default replyToAnswer;

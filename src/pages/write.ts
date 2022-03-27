@@ -1,5 +1,4 @@
 import { store } from "./../store";
-import showPost from "./show";
 import commander from "../commander";
 
 const ERROR_MESSAGE = "한 글자 이상 입력해주세요.\n";
@@ -29,12 +28,7 @@ const write = async () => {
 const compelteWriting = () => {
   console.clear();
 
-  const post = { id: store.newPostId, title, content };
-  store.viewType = "Preview";
-
-  showPost(post);
-  store.addPost(post);
-  commander.onEnter();
+  store.configureShowInfo({ id: store.newPostId, title, content }, "Preview");
 };
 
 export default write;

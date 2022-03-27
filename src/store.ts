@@ -2,6 +2,8 @@ import { Post, AskType, ViewType, WriteType } from "./model";
 import { makeAutoObservable, reaction } from "mobx";
 import askQuestion from "./pages/ask";
 import write from "./pages/write";
+import showPost from "./pages/show";
+import commander from "./commander";
 
 class Store {
   private readonly _HOME_MENU: string[] = ["목록 조회", "쓰기"];
@@ -9,6 +11,8 @@ class Store {
   private _askType: AskType = "HomeMenu";
   private _viewType: ViewType = "View";
   private _writeType: WriteType = "Content";
+  private _postToShow: Post = {} as Post;
+  private _showPost = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -22,6 +26,19 @@ class Store {
       () => this._writeType,
       () => {
         write();
+      }
+    );
+
+    reaction(
+      () => this._showPost,
+      () => {
+        if (!this._showPost) return;
+
+        if (this._viewType === "Preview") this.addPost(this._postToShow);
+        showPost(this._postToShow);
+        commander.onEnter();
+
+        this._showPost = false;
       }
     );
   }
@@ -44,10 +61,6 @@ class Store {
 
   get viewType() {
     return this._viewType;
-  }
-
-  set viewType(viewType: ViewType) {
-    this._viewType = viewType;
   }
 
   get writeType() {
@@ -78,6 +91,12 @@ class Store {
 
   addPost(post: Post) {
     this.postList.push(post);
+  }
+
+  configureShowInfo(postToShow: Post, viewType: ViewType) {
+    this._postToShow = postToShow;
+    this._viewType = viewType;
+    this._showPost = true;
   }
 }
 
