@@ -9,14 +9,13 @@ import { PostRepository } from "./repository/PostRepository";
 import { posts } from "./data/posts";
 import EventEmitter from "events";
 import { ViewController } from "./controller/ViewController";
+import { CreatePostView } from "./view/CreatePostView";
 
 export interface Context {
   // view
   selectView: SelectView;
   postDetailView: PostDetailView;
-  // service
-  postQueryService: PostQueryService;
-  postCreateService: PostCreateService;
+  createPostView: CreatePostView;
   //store
   store: Store;
   // controller
@@ -35,6 +34,7 @@ export const createContext = (): Context => {
   const store = new Store(eventEmitter);
   const selectView = new SelectView(cli);
   const postDetailView = new PostDetailView(cli);
+  const createPostView = new CreatePostView(cli);
 
   const postRepository = new PostRepository(posts);
 
@@ -44,15 +44,16 @@ export const createContext = (): Context => {
   const viewController = new ViewController(
     selectView,
     postDetailView,
+    createPostView,
     store,
-    postQueryService
+    postQueryService,
+    postCreateService
   );
 
   return {
     selectView,
     postDetailView,
-    postQueryService,
-    postCreateService,
+    createPostView,
     store,
     eventEmitter,
     viewController,

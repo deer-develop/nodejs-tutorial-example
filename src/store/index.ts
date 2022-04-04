@@ -13,6 +13,10 @@ export class Store {
 
   constructor(private eventEmitter: EventEmitter) {}
 
+  public getState() {
+    return this.state;
+  }
+
   public updateState(state: ApplicationState) {
     this.state = state;
     this.eventEmitter.emit("state-change", state);

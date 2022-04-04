@@ -10,11 +10,11 @@ export class SelectView {
     });
   }
 
-  printExitOption() {
-    this.cli.print("x) 뒤로가기\n");
+  printExitOption(text: string) {
+    this.cli.print(`x) ${text}\n`);
   }
 
   async ask() {
-    return await this.cli.ask("선택: ");
+    return await this.cli.ask("\n선택: ");
   }
 }

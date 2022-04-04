@@ -7,10 +7,10 @@ export class Cli {
     this.rl.write(value);
   }
 
-  async ask(question: string): Promise<string> {
+  async ask(question: string, clear = true): Promise<string> {
     return new Promise((resolve) => {
       this.rl.question(question, (answer) => {
-        console.clear();
+        if (clear) console.clear();
         resolve(answer);
       });
     });
