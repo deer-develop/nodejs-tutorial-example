@@ -3,7 +3,7 @@ import { Store } from "../store";
 import { PostQueryService } from "../service/PostQueryService";
 import { PostDetailView } from "../view/PostDetailView";
 
-class ViewController {
+export class ViewController {
   constructor(
     private selectView: SelectView,
     private postDetailView: PostDetailView,
@@ -14,6 +14,7 @@ class ViewController {
   renderHome() {
     this.selectView.printItems(this.store.menus);
     this.selectView.printExitOption();
+    this.selectView.ask().then((id) => {});
   }
 
   renderPostList() {

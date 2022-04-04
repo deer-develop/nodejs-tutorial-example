@@ -7,6 +7,8 @@ import { Cli } from "./cli";
 import * as readline from "readline";
 import { PostRepository } from "./repository/PostRepository";
 import { posts } from "./data/posts";
+import EventEmitter from "events";
+import { ViewController } from "./controller/ViewController";
 
 export interface Context {
   // view
@@ -17,6 +19,9 @@ export interface Context {
   postCreateService: PostCreateService;
   //store
   store: Store;
+  // controller
+  viewController: ViewController;
+  eventEmitter: EventEmitter;
 }
 
 const rl = readline.createInterface({
@@ -26,7 +31,8 @@ const rl = readline.createInterface({
 
 export const createContext = (): Context => {
   const cli = new Cli(rl);
-  const store = new Store();
+  const eventEmitter = new EventEmitter();
+  const store = new Store(eventEmitter);
   const selectView = new SelectView(cli);
   const postDetailView = new PostDetailView(cli);
 
@@ -35,11 +41,20 @@ export const createContext = (): Context => {
   const postQueryService = new PostQueryService(postRepository);
   const postCreateService = new PostCreateService(postRepository);
 
+  const viewController = new ViewController(
+    selectView,
+    postDetailView,
+    store,
+    postQueryService
+  );
+
   return {
     selectView,
     postDetailView,
     postQueryService,
     postCreateService,
     store,
+    eventEmitter,
+    viewController,
   };
 };

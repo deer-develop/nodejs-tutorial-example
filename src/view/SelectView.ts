@@ -13,4 +13,8 @@ export class SelectView {
   printExitOption() {
     this.cli.print("x) 뒤로가기\n");
   }
+
+  async ask() {
+    return await this.cli.ask("선택: ");
+  }
 }

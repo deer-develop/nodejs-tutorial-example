@@ -5,4 +5,13 @@ export type Entity = {
 
 export type Post = Entity & { content: string };
 
-export type MenuName = "목록 조회" | "쓰기";
+export type ApplicationState = {
+  view: ViewState;
+  postId?: number;
+};
+
+export type ViewState =
+  | "SELECT_MENU"
+  | "SELECT_POST"
+  | "VIEW_POST"
+  | "CREATE_POST";

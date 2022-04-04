@@ -1,4 +1,5 @@
-import { Entity } from "../types";
+import { ApplicationState, Entity } from "../types";
+import EventEmitter from "events";
 
 export class Store {
   menus: Entity[] = [
@@ -6,7 +7,14 @@ export class Store {
     { id: 2, title: "쓰기" },
   ];
 
-  get menuSize(): number {
-    return this.menus.length || 0;
+  private state: ApplicationState = {
+    view: "SELECT_MENU",
+  };
+
+  constructor(private eventEmitter: EventEmitter) {}
+
+  public updateState(state: ApplicationState) {
+    this.state = state;
+    this.eventEmitter.emit("state-change", state);
   }
 }
