@@ -1,5 +1,4 @@
 import { Post } from "../types";
-import { posts } from "../data/posts";
 
 export class PostRepository {
   constructor(private posts: Post[]) {}
@@ -18,5 +17,3 @@ export class PostRepository {
     this.posts.push(post);
   }
 }
-
-export const postRepository = new PostRepository(posts);

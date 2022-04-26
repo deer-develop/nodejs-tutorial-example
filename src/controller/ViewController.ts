@@ -34,6 +34,7 @@ export class ViewController {
       console.log("종료되었습니다.");
       process.exit();
     }
+
     if (parseInt(id) === 1) this.updateState("SELECT_POST");
     if (parseInt(id) === 2) this.updateState("CREATE_POST");
   }
